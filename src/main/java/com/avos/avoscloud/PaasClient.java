@@ -207,17 +207,6 @@ public class PaasClient {
     apiKeyField = "X-LC-Key";
     sessionTokenField = "X-LC-Session";
     AVOSCloud.setStorageType(AVOSCloud.StorageType.StorageTypeS3);
-    switchPushRouter("useAVOSCloudUS");
-  }
-
-  private static void switchPushRouter(String routerServer) {
-    try {
-      Class<?> avPushRouterClass = Class.forName("com.avos.avospush.push.AVPushRouter");
-      Method switchMethod = avPushRouterClass.getMethod(routerServer);
-      switchMethod.invoke(avPushRouterClass);
-    } catch (Exception e) {
-      LogUtil.avlog.i("avpushRouter server didn't switched");
-    }
   }
 
   public static void useAVCloudCN() {
@@ -228,7 +217,6 @@ public class PaasClient {
     apiKeyField = "X-LC-Key";
     sessionTokenField = "X-LC-Session";
     AVOSCloud.setStorageType(AVOSCloud.StorageType.StorageTypeQiniu);
-    switchPushRouter("useAVOSCloudCN");
   }
 
   public static void useLocalStg() {

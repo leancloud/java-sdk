@@ -73,7 +73,7 @@ public class LogUtil {
         text = "null";
       }
 
-      logger.info(Tag, Mname + text);
+      logger.info(Mname + text);
     }
 
     // ================================================================================
@@ -89,7 +89,7 @@ public class LogUtil {
         text = "null";
       }
 
-      logger.debug(Tag, Cname + "->" + Mname + text);
+      logger.debug(Cname + "->" + Mname + text);
     }
 
     public static void d(Map<String, Object> o) {
@@ -107,7 +107,7 @@ public class LogUtil {
         }
       }
 
-      logger.debug(Tag, Cname + "->" + Mname + text);
+      logger.debug(Cname + "->" + Mname + text);
     }
 
     public static void d(int text) {
@@ -127,7 +127,7 @@ public class LogUtil {
         return;
 
       getTrace();
-      logger.debug(Tag, Tag + "->" + Mname + "");
+      logger.debug(Tag + "->" + Mname + "");
     }
 
     public static void d(String Tag, String text) {
@@ -135,14 +135,14 @@ public class LogUtil {
         return;
 
       getTrace();
-      logger.debug(Tag, Cname + "->" + Mname + text);
+      logger.debug(Cname + "->" + Mname + text);
     }
 
     public static void d(String text, Exception e) {
       if (!shouldShow(AVOSCloud.LOG_LEVEL_ERROR))
         return;
       String tmp = Cname + "->" + Mname + text + ":" + e.toString();
-      logger.debug(Tag, tmp);
+      logger.debug(tmp);
       e.printStackTrace();
     }
 
@@ -159,7 +159,7 @@ public class LogUtil {
         text = "null";
       }
 
-      logger.info(Tag, Mname + text);
+      logger.info(Mname + text);
     }
 
     // ================================================================================
@@ -175,7 +175,7 @@ public class LogUtil {
         text = "null";
       }
 
-      logger.warn(Tag, Mname + text);
+      logger.warn(Mname + text);
     }
 
     // ================================================================================
@@ -191,21 +191,21 @@ public class LogUtil {
         text = "null";
       }
 
-      logger.error(Tag, Cname + "->" + Mname + text);
+      logger.error(Cname + "->" + Mname + text);
     }
 
     public static void e() {
       if (!shouldShow(AVOSCloud.LOG_LEVEL_ERROR))
         return;
       getTrace();
-      logger.error(Tag, Cname + "->" + Mname + "");
+      logger.error(Cname + "->" + Mname + "");
     }
 
     public static void e(String text, Exception e) {
       if (!shouldShow(AVOSCloud.LOG_LEVEL_ERROR))
         return;
       String tmp = text + Mname + "err:" + e.toString();
-      logger.error(Tag, tmp);
+      logger.error(tmp);
       e.printStackTrace();
     }
 
@@ -213,14 +213,14 @@ public class LogUtil {
       if (!shouldShow(AVOSCloud.LOG_LEVEL_ERROR))
         return;
       getTrace();
-      logger.error(Tag, Cname + "->" + Mname + text);
+      logger.error(Cname + "->" + Mname + text);
     }
 
     public static void e(String Tag, String text, Exception e) {
       if (!shouldShow(AVOSCloud.LOG_LEVEL_ERROR))
         return;
       getTrace();
-      logger.error(Tag, Cname + "->" + Mname + text + " err:" + e.toString());
+      logger.error(Cname + "->" + Mname + text + " err:" + e.toString());
     }
   }
 }
