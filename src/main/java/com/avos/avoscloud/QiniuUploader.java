@@ -340,7 +340,7 @@ class QiniuUploader extends HttpClientUploader {
         final int nextChunkSize = getNextChunkSize(blockOffset, data);
 
         RequestBody requestBody =
-            RequestBody.create(MediaType.parse(parent.parseFile.mimeType()), data, blockOffset,
+            RequestBody.create(MediaType.parse(parent.parseFile.mimeType()), data, blockOffset * blockSize,
                 nextChunkSize);
 
         builder = builder.post(requestBody);
