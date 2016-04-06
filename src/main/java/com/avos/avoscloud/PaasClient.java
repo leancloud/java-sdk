@@ -2,25 +2,15 @@ package com.avos.avoscloud;
 
 import com.alibaba.fastjson.JSON;
 import com.avos.avoscloud.okhttp.Call;
-import com.avos.avoscloud.okhttp.Interceptor;
 import com.avos.avoscloud.okhttp.MediaType;
 import com.avos.avoscloud.okhttp.OkHttpClient;
 import com.avos.avoscloud.okhttp.Request;
 import com.avos.avoscloud.okhttp.RequestBody;
 import com.avos.avoscloud.okhttp.Response;
-import com.avos.avoscloud.okhttp.ResponseBody;
-import com.avos.avoscloud.okhttp.internal.framed.Header;
-import com.avos.avoscloud.okio.Buffer;
-import com.avos.avoscloud.okio.BufferedSource;
-import com.avos.avoscloud.okio.ForwardingSource;
-import com.avos.avoscloud.okio.Okio;
-import com.avos.avoscloud.okio.Source;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.CookieHandler;
-import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -544,38 +534,6 @@ public class PaasClient {
 
   public static void setLastModifyEnabled(boolean e) {
     lastModifyEnabled = e;
-  }
-
-  public static boolean isJSONResponse(String contentType, String content) {
-    boolean result = false;
-    if (!AVUtils.isBlankString(contentType)) {
-      result = contentType.toLowerCase().contains("application/json");
-    }
-    if (!result) {
-      result = isJSONResponseContent(content);
-    }
-    return result;
-  }
-
-  public static boolean isJSONResponseContent(String content) {
-    try {
-      JSON.parse(content);
-      return true;
-    } catch (Exception e) {
-      return false;
-    }
-  }
-
-  protected static String extractContentType(Header[] headers) {
-    if (headers != null) {
-      for (Header h : headers) {
-
-        if (h.name.toString().equalsIgnoreCase("Content-Type")) {
-          return h.value.toString();
-        }
-      }
-    }
-    return null;
   }
 
   public static boolean updateLastModify(final String absolutURLString, final String ts) {

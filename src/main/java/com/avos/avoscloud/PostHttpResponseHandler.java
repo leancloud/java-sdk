@@ -16,8 +16,9 @@ public class PostHttpResponseHandler extends AsyncHttpResponseHandler {
     if (AVOSCloud.isDebugLogEnabled()) {
       LogUtil.avlog.d(content);
     }
-    String contentType = PaasClient.extractContentType(headers);
-    if (AVUtils.checkResponseType(statusCode, content, contentType, getCallback())) return;
+    String contentType = AVUtils.extractContentType(headers);
+    if (AVUtils.checkResponseType(statusCode, content, contentType, getCallback()))
+      return;
 
     int code = AVErrorUtils.errorCode(content);
     if (code > 0) {
@@ -37,8 +38,9 @@ public class PostHttpResponseHandler extends AsyncHttpResponseHandler {
     if (AVOSCloud.isDebugLogEnabled()) {
       LogUtil.avlog.e(content + "\nerror:" + error);
     }
-    String contentType = PaasClient.extractContentType(headers);
-    if (AVUtils.checkResponseType(statusCode, content, contentType, getCallback())) return;
+    String contentType = AVUtils.extractContentType(headers);
+    if (AVUtils.checkResponseType(statusCode, content, contentType, getCallback()))
+      return;
 
     if (getCallback() != null) {
       getCallback().onFailure(statusCode, error, content);

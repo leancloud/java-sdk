@@ -29,7 +29,7 @@ public class GetHttpResponseHandler extends AsyncHttpResponseHandler {
       LogUtil.avlog.d(content);
     }
 
-    String contentType = PaasClient.extractContentType(headers);
+    String contentType = AVUtils.extractContentType(headers);
     if (AVUtils.checkResponseType(statusCode, content, contentType, getCallback()))
       return;
 
@@ -60,7 +60,7 @@ public class GetHttpResponseHandler extends AsyncHttpResponseHandler {
       LogUtil.avlog.e(content + "\nerror:" + error);
     }
 
-    String contentType = PaasClient.extractContentType(headers);
+    String contentType = AVUtils.extractContentType(headers);
     if (AVUtils.checkResponseType(statusCode, content, contentType, getCallback()))
       return;
 
