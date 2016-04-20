@@ -49,7 +49,6 @@ public class OjbectTest extends TestCase {
     return new TestSuite(OjbectTest.class);
   }
 
-  static private String internalObjectId = "";
   static private String testTableName = "GameScoreFromAndroid";
   static private double bigObjectValue = 123;
 
@@ -261,12 +260,12 @@ public class OjbectTest extends TestCase {
 
     gameScore.save();
     assertTrue(!gameScore.getObjectId().isEmpty());
-    internalObjectId = gameScore.getObjectId();
   }
 
   public void testObjectSave2FetchAndSave() throws Exception {
+    AVQuery query = new AVQuery(testTableName);
     AVObject verifyObject = new AVObject(testTableName);
-    verifyObject.setObjectId(internalObjectId);
+    verifyObject.setObjectId(query.getFirst().getObjectId());
     verifyObject.fetch();
     assertTrue(verifyObject.getCreatedAt() != null);
 

@@ -27,10 +27,6 @@ public class AVOSCloud {
   static final String AV_CLOUD_API_VERSION_KEY_ZONE = "AV_CLOUD_API_VERSION_KEY_ZONE";
   static final String AV_CLOUD_API_VERSION_KEY = "AV_CLOUD_API_VERSION";
 
-  public static final int DEFAULT_NETWORK_TIMEOUT = 15000;
-
-  private static int networkTimeoutInMills = DEFAULT_NETWORK_TIMEOUT;
-
 
   /**
    * Set network timeout in milliseconds.default is 10 seconds.
@@ -59,6 +55,8 @@ public class AVOSCloud {
 
     SerializeConfig.getGlobalInstance().put(AVObject.class, AVObjectSerializer.instance);
     SerializeConfig.getGlobalInstance().put(AVUser.class, AVObjectSerializer.instance);
+    InternalConfigurationController.globalInstance().setInternalLogger(
+        Log4j2Implementation.instance());
   }
 
   private AVOSCloud() {}
@@ -88,8 +86,6 @@ public class AVOSCloud {
     InternalConfigurationController.globalInstance().getAppConfiguration().applicationId =
         applicationId;
     InternalConfigurationController.globalInstance().getAppConfiguration().clientKey = clientKey;
-    InternalConfigurationController.globalInstance().setInternalLogger(
-        Log4j2Implementation.instance());
   }
 
   public static void useAVCloudUS() {

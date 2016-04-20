@@ -18,6 +18,16 @@
 			<url>http://mvn.leancloud.cn/nexus/content/repositories/releases</url>
 		</repository>
 	</repositories>
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<url>http://mvn.leancloud.cn/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<url>http://mvn.leancloud.cn/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -59,6 +69,18 @@
 			<groupId>cn.leancloud</groupId>
 			<artifactId>leancloud-utils</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.2</version>
 		</dependency>
 	</dependencies>
 	<build>
