@@ -86,6 +86,7 @@ public class AVOSCloud {
     InternalConfigurationController.globalInstance().getAppConfiguration().applicationId =
         applicationId;
     InternalConfigurationController.globalInstance().getAppConfiguration().clientKey = clientKey;
+    AppRouterManager.getInstance().fetchRouter(false);
   }
 
   public static void useAVCloudUS() {
