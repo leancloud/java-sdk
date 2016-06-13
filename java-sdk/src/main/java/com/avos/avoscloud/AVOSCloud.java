@@ -228,4 +228,8 @@ public class AVOSCloud {
   public static void getServerDateInBackground(AVServerDateCallback callback) {
     InternalDate.getServerDateInBackground(callback);
   }
+
+  public static void setShouldUseMasterKey(boolean should) {
+    EngineRequestSign.instance().setUserMasterKey(should);
+  }
 }
