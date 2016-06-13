@@ -12,6 +12,8 @@ import com.avos.avoscloud.internal.AppConfiguration.StorageType;
 import com.avos.avoscloud.internal.InternalConfigurationController;
 import com.avos.avoscloud.internal.InternalDate;
 import com.avos.avoscloud.internal.InternalSMS;
+import com.avos.avoscloud.internal.impl.EngineAppConfiguration;
+import com.avos.avoscloud.internal.impl.EngineRequestSign;
 import com.avos.avoscloud.internal.impl.Log4j2Implementation;
 
 /**
@@ -80,12 +82,16 @@ public class AVOSCloud {
    * @param context The active Context for your application.
    * @param applicationId  The application id provided in the AVOSCloud dashboard.
    * @param clientKey The client key provided in the AVOSCloud dashboard.
+   * @param masterKey The master key provided in the AVOSCloud dashboard.
    */
-  public static void initialize(String applicationId, String clientKey) {
+  public static void initialize(String applicationId, String clientKey, String masterKey) {
+    InternalConfigurationController.globalInstance().setAppConfiguration(
+        EngineAppConfiguration.instance());
+    InternalConfigurationController.globalInstance().setInternalRequestSign(
+        EngineRequestSign.instance());
 
-    InternalConfigurationController.globalInstance().getAppConfiguration().applicationId =
-        applicationId;
-    InternalConfigurationController.globalInstance().getAppConfiguration().clientKey = clientKey;
+    EngineAppConfiguration.instance().applicationId = applicationId;
+    EngineAppConfiguration.instance().clientKey = clientKey;
     AppRouterManager.getInstance().fetchRouter(false);
   }
 
