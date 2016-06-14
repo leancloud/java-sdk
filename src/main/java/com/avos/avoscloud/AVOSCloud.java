@@ -7,22 +7,21 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.serializer.SerializeConfig;
-import com.avos.avoscloud.AVServerDateCallback;
+import com.avos.avoscloud.callback.AVServerDateCallback;
+import com.avos.avoscloud.internal.AppConfiguration.StorageType;
+import com.avos.avoscloud.internal.InternalConfigurationController;
+import com.avos.avoscloud.internal.InternalDate;
+import com.avos.avoscloud.internal.InternalSMS;
+import com.avos.avoscloud.internal.impl.EngineAppConfiguration;
+import com.avos.avoscloud.internal.impl.EngineRequestSign;
+import com.avos.avoscloud.internal.impl.Log4j2Implementation;
 
 /**
  * The AVOSCloud class contains static functions that handle global configuration for the AVOSCloud
  * library.
  */
 public class AVOSCloud {
-  public static String applicationId;
-  public static String clientKey;
 
-  public static final int LOG_LEVEL_VERBOSE = 1 << 1;
-  public static final int LOG_LEVEL_DEBUG = 1 << 2;
-  public static final int LOG_LEVEL_INFO = 1 << 3;
-  public static final int LOG_LEVEL_WARNING = 1 << 4;
-  public static final int LOG_LEVEL_ERROR = 1 << 5;
-  public static final int LOG_LEVEL_NONE = ~0;
   static final String AV_CLOUD_CACHE_EXPIRE_AUTO_CLEAN_KEY = "AV_CLOUD_CACHE_EXPIRE_AUTO_CLEAN_KEY";
   static final String AV_CLOUD_CACHE_EXPIRE_DATE_KEY = "AV_CLOUD_CACHE_EXPIRE_DATE_KEY";
   static final Integer AV_CLOUD_CACHE_DEFAULT_EXPIRE_DATE = 30;
@@ -30,18 +29,6 @@ public class AVOSCloud {
   static final String AV_CLOUD_API_VERSION_KEY_ZONE = "AV_CLOUD_API_VERSION_KEY_ZONE";
   static final String AV_CLOUD_API_VERSION_KEY = "AV_CLOUD_API_VERSION";
 
-  private static int logLevel = LOG_LEVEL_NONE;
-
-  private static boolean internalDebugLog = false;
-  private static boolean userInternalDebugLog = false;
-
-  public static final int DEFAULT_NETWORK_TIMEOUT = 15000;
-
-  static final int DEFAULT_THREAD_POOL_SIZE = 10;
-
-  private static int networkTimeoutInMills = DEFAULT_NETWORK_TIMEOUT;
-
-  private static int threadPoolSize = DEFAULT_THREAD_POOL_SIZE;
 
   /**
    * Set network timeout in milliseconds.default is 10 seconds.
@@ -49,7 +36,8 @@ public class AVOSCloud {
    * @param timeoutInMills
    */
   public static void setNetworkTimeout(int timeoutInMills) {
-    networkTimeoutInMills = timeoutInMills;
+    InternalConfigurationController.globalInstance().getClientConfiguration()
+        .setNetworkTimeoutInMills(timeoutInMills);
   }
 
   /**
@@ -58,19 +46,8 @@ public class AVOSCloud {
    * @return
    */
   public static int getNetworkTimeout() {
-    return networkTimeoutInMills;
-  }
-
-  public static int getThreadPoolSize() {
-    return threadPoolSize;
-  }
-
-  public static void setThreadPoolSize(int size) {
-    threadPoolSize = size;
-  }
-
-  public enum StorageType {
-    StorageTypeQiniu, StorageTypeAV, StorageTypeS3;
+    return InternalConfigurationController.globalInstance().getClientConfiguration()
+        .getNetworkTimeoutInMills();
   }
 
   static {
@@ -80,9 +57,9 @@ public class AVOSCloud {
 
     SerializeConfig.getGlobalInstance().put(AVObject.class, AVObjectSerializer.instance);
     SerializeConfig.getGlobalInstance().put(AVUser.class, AVObjectSerializer.instance);
+    InternalConfigurationController.globalInstance().setInternalLogger(
+        Log4j2Implementation.instance());
   }
-
-  private static StorageType storageType = StorageType.StorageTypeQiniu;
 
   private AVOSCloud() {}
 
@@ -105,10 +82,18 @@ public class AVOSCloud {
    * @param context The active Context for your application.
    * @param applicationId  The application id provided in the AVOSCloud dashboard.
    * @param clientKey The client key provided in the AVOSCloud dashboard.
+   * @param masterKey The master key provided in the AVOSCloud dashboard.
    */
-  public static void initialize(String applicationId, String clientKey) {
-    AVOSCloud.applicationId = applicationId;
-    AVOSCloud.clientKey = clientKey;
+  public static void initialize(String applicationId, String clientKey, String masterKey) {
+    InternalConfigurationController.globalInstance().setAppConfiguration(
+        EngineAppConfiguration.instance());
+    InternalConfigurationController.globalInstance().setInternalRequestSign(
+        EngineRequestSign.instance());
+
+    EngineAppConfiguration.instance().applicationId = applicationId;
+    EngineAppConfiguration.instance().clientKey = clientKey;
+    EngineAppConfiguration.instance().masterKey = masterKey;
+    AppRouterManager.getInstance().fetchRouter(false);
   }
 
   public static void useAVCloudUS() {
@@ -119,32 +104,32 @@ public class AVOSCloud {
     PaasClient.useAVCloudCN();
   }
 
-  static void showInternalDebugLog(boolean show) {
-    internalDebugLog = show;
-  }
-
   public static boolean showInternalDebugLog() {
-    return internalDebugLog;
+    return InternalConfigurationController.globalInstance().getInternalLogger()
+        .showInternalDebugLog();
   }
 
   public static void setDebugLogEnabled(boolean enable) {
-    userInternalDebugLog = enable;
+    InternalConfigurationController.globalInstance().getInternalLogger().setDebugEnabled(enable);
   }
 
   public static boolean isDebugLogEnabled() {
-    return userInternalDebugLog || internalDebugLog;
+    return InternalConfigurationController.globalInstance().getInternalLogger().isDebugEnabled()
+        || InternalConfigurationController.globalInstance().getInternalLogger()
+            .showInternalDebugLog();
   }
 
   public static StorageType getStorageType() {
-    return storageType;
+    return InternalConfigurationController.globalInstance().getAppConfiguration().getStorageType();
   }
 
   public static void setStorageType(StorageType storageType) {
-    AVOSCloud.storageType = storageType;
+    InternalConfigurationController.globalInstance().getAppConfiguration()
+        .setStorageType(storageType);
   }
 
   public static void setBaseUrl(final String baseUrl) {
-    PaasClient.storageInstance().setBaseUrl(baseUrl);
+    InternalConfigurationController.globalInstance().getAppConfiguration().setBaseUrl(baseUrl);
   }
 
   /**
@@ -162,42 +147,7 @@ public class AVOSCloud {
    */
   public static void requestSMSCode(String phone, String name, String op, int ttl)
       throws AVException {
-
-    requestSMSCodeInBackground(phone, null, getSMSCodeEnv(name, op, ttl), true,
-        new RequestMobileCodeCallback() {
-          @Override
-          public void done(AVException e) {
-            if (e != null) {
-              AVExceptionHolder.add(e);
-            }
-          }
-        });
-    if (AVExceptionHolder.exists()) {
-      throw AVExceptionHolder.remove();
-    }
-  }
-
-  private static Map<String, Object> getSMSCodeEnv(String name, String op, int ttl) {
-    Map<String, Object> map = new HashMap<String, Object>();
-    if (!AVUtils.isBlankString(op)) {
-      map.put("op", op);
-    }
-    if (!AVUtils.isBlankString(name)) {
-      map.put("name", name);
-    }
-    if (ttl > 0) {
-      map.put("ttl", ttl);
-    }
-    return map;
-  }
-
-  private static Map<String, Object> getVoiceCodeEnv(String countryCode) {
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("smsType", "voice");
-    if (!AVUtils.isBlankString(countryCode)) {
-      map.put("IDD", countryCode);
-    }
-    return map;
+    InternalSMS.requestSMSCode(phone, name, op, ttl);
   }
 
   /**
@@ -211,52 +161,7 @@ public class AVOSCloud {
    */
   public static void requestSMSCode(String phone, String templateName, Map<String, Object> env)
       throws AVException {
-    requestSMSCodeInBackground(phone, templateName, env, true, new RequestMobileCodeCallback() {
-      @Override
-      public void done(AVException e) {
-        if (e != null) {
-          AVExceptionHolder.add(e);
-        }
-      }
-    });
-    if (AVExceptionHolder.exists()) {
-      throw AVExceptionHolder.remove();
-    }
-  }
-
-  private static void requestSMSCodeInBackground(String phone, String templateName,
-      Map<String, Object> env, boolean sync, RequestMobileCodeCallback callback) {
-    final RequestMobileCodeCallback internalCallback = callback;
-
-    if (AVUtils.isBlankString(phone) || !AVUtils.checkMobilePhoneNumber(phone)) {
-      callback.internalDone(new AVException(AVException.INVALID_PHONE_NUMBER,
-          "Invalid Phone Number"));
-    }
-
-    if (env == null) {
-      env = new HashMap<String, Object>();
-    }
-    env.put("mobilePhoneNumber", phone);
-    if (!AVUtils.isBlankString(templateName)) {
-      env.put("template", templateName);
-    }
-    String object = AVUtils.jsonStringFromMapWithNull(env);
-    PaasClient.storageInstance().postObject("requestSmsCode", object, sync, false,
-        new GenericObjectCallback() {
-          @Override
-          public void onSuccess(String content, AVException e) {
-            if (internalCallback != null) {
-              internalCallback.internalDone(null, null);
-            }
-          }
-
-          @Override
-          public void onFailure(Throwable error, String content) {
-            if (internalCallback != null) {
-              internalCallback.internalDone(null, AVErrorUtils.createException(error, content));
-            }
-          }
-        }, null, null);
+    InternalSMS.requestSMSCode(phone, templateName, env);
   }
 
   /**
@@ -270,7 +175,7 @@ public class AVOSCloud {
    * 
    */
   public static void requestSMSCode(String phone) throws AVException {
-    requestSMSCode(phone, null, null, 0);
+    InternalSMS.requestSMSCode(phone, null, null, 0);
   }
 
   /**
@@ -280,30 +185,7 @@ public class AVOSCloud {
    * @throws AVException
    */
   public static void requestVoiceCode(String phoneNumber) throws AVException {
-    requestVoiceCode(phoneNumber, null);
-  }
-
-  /**
-   * 请求发送语音验证码，验证码会以电话形式打给目标手机
-   * 
-   * @param phoneNumber 目标手机号
-   * @param idd 电话的国家区号
-   * @throws AVException
-   */
-
-  private static void requestVoiceCode(String phoneNumber, String idd) throws AVException {
-    requestSMSCodeInBackground(phoneNumber, null, getVoiceCodeEnv(idd), true,
-        new RequestMobileCodeCallback() {
-          @Override
-          public void done(AVException e) {
-            if (e != null) {
-              AVExceptionHolder.add(e);
-            }
-          }
-        });
-    if (AVExceptionHolder.exists()) {
-      throw AVExceptionHolder.remove();
-    }
+    InternalSMS.requestVoiceCode(phoneNumber, null);
   }
 
 
@@ -315,17 +197,7 @@ public class AVOSCloud {
    * @throws AVException
    */
   public static void verifySMSCode(String code, String mobilePhoneNumber) throws AVException {
-    verifySMSCodeInBackground(code, mobilePhoneNumber, true, new AVMobilePhoneVerifyCallback() {
-      @Override
-      public void done(AVException e) {
-        if (e != null) {
-          AVExceptionHolder.add(e);
-        }
-      }
-    });
-    if (AVExceptionHolder.exists()) {
-      throw AVExceptionHolder.remove();
-    }
+    InternalSMS.verifySMSCode(code, mobilePhoneNumber);
   }
 
   /**
@@ -336,36 +208,7 @@ public class AVOSCloud {
    * @throws AVException
    */
   public static void verifyCode(String code, String mobilePhoneNumber) throws AVException {
-    verifySMSCode(code, mobilePhoneNumber);
-  }
-
-  private static void verifySMSCodeInBackground(String code, String mobilePhoneNumber,
-      boolean sync, AVMobilePhoneVerifyCallback callback) {
-    final AVMobilePhoneVerifyCallback internalCallback = callback;
-
-    if (AVUtils.isBlankString(code) || !AVUtils.checkMobileVerifyCode(code)) {
-      callback
-          .internalDone(new AVException(AVException.INVALID_PHONE_NUMBER, "Invalid Verify Code"));
-    }
-    String endpointer = String.format("verifySmsCode/%s", code);
-    Map<String, Object> params = new HashMap<String, Object>();
-    params.put("mobilePhoneNumber", mobilePhoneNumber);
-    PaasClient.storageInstance().postObject(endpointer, AVUtils.restfulServerData(params), sync,
-        false, new GenericObjectCallback() {
-          @Override
-          public void onSuccess(String content, AVException e) {
-            if (internalCallback != null) {
-              internalCallback.internalDone(null, null);
-            }
-          }
-
-          @Override
-          public void onFailure(Throwable error, String content) {
-            if (internalCallback != null) {
-              internalCallback.internalDone(null, AVErrorUtils.createException(error, content));
-            }
-          }
-        }, null, null);
+    InternalSMS.verifySMSCode(code, mobilePhoneNumber);
   }
 
   /**
@@ -375,45 +218,19 @@ public class AVOSCloud {
    * @throws AVException
    */
   public static Date getServerDate() throws AVException {
-    final Date[] results = {null};
-    getServerDateInBackground(true, new AVServerDateCallback() {
-      @Override
-      public void done(Date serverDate, AVException e) {
-        if (e == null) {
-          results[0] = serverDate;
-        } else {
-          AVExceptionHolder.add(e);
-        }
-      }
-    });
-    if (AVExceptionHolder.exists()) {
-      throw AVExceptionHolder.remove();
-    }
-    return results[0];
+    return InternalDate.getServerDate();
   }
 
-  private static void getServerDateInBackground(boolean sync, final AVServerDateCallback callback) {
-    PaasClient.storageInstance().getObject("date", null, sync, null, new GenericObjectCallback() {
-      @Override
-      public void onSuccess(String content, AVException e) {
-        try {
-          Date date = AVUtils.dateFromMap(JSON.parseObject(content, Map.class));
-          if (callback != null) {
-            callback.internalDone(date, null);
-          }
-        } catch (Exception ex) {
-          if (callback != null) {
-            callback.internalDone(null, AVErrorUtils.createException(ex, null));
-          }
-        }
-      }
+  /**
+   * 获取服务器端当前时间
+   * 
+   * @param callback
+   */
+  public static void getServerDateInBackground(AVServerDateCallback callback) {
+    InternalDate.getServerDateInBackground(callback);
+  }
 
-      @Override
-      public void onFailure(Throwable error, String content) {
-        if (callback != null) {
-          callback.internalDone(null, AVErrorUtils.createException(error, content));
-        }
-      }
-    });
+  public static void setShouldUseMasterKey(boolean should) {
+    EngineRequestSign.instance().setUserMasterKey(should);
   }
 }

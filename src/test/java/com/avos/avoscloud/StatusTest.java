@@ -1,6 +1,5 @@
 package com.avos.avoscloud;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -182,6 +181,7 @@ public class StatusTest extends TestCase {
     final AVStatus status = AVStatus.createStatus("image", "to my followers.");
     status.send();
 
+    Thread.sleep(100);
     // remove it
     AVStatus.deleteStatusWithID(status.getObjectId());
 

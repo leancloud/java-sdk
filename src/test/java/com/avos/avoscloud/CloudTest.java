@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.avos.avoscloud.internal.InternalConfigurationController;
+
 import junit.framework.TestCase;
 
 public class CloudTest extends TestCase {
@@ -11,10 +13,11 @@ public class CloudTest extends TestCase {
   @Override
   public void setUp() {
     TestApp.init();
-    AVCloud.setProductionMode(false);
+//    AVCloud.setProductionMode(false);
   }
 
-  public void testRPC() throws Exception {
+  public void testRPC() throws Exception {    
+    AVCloud.rpcFunction("hello", null);
     Map<String, Object> map = AVCloud.rpcFunction("complexObject", null);
     assertEquals("ComplexObject", ((AVObject) map.get("avObject")).getClassName());
     assertNotSame(0, map.size());
@@ -29,6 +32,6 @@ public class CloudTest extends TestCase {
     complexObject.save();
     HashMap object = AVCloud.rpcFunction("testBareAVObjectParams", complexObject);
     HashMap returnValue =
-        AVCloud.rpcFunction("testAVObjectsArrayParams", Arrays.asList(complexObject));
+        AVCloud.rpcFunction("testAVObjectsArrayParams", Arrays.asList(complexObject));    
   }
 }

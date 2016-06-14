@@ -465,7 +465,7 @@ public class QueryTest extends TestCase {
     newUser.setUsername(AVUtils.getRandomString(10) + System.currentTimeMillis());
     newUser.setPassword(AVUtils.getRandomString(10));
     newUser.signUp();
-    AVUser.getCurrentUser().follow(gudongObjectId);
+    AVUser.getCurrentUser().follow(gudongObjectId,null);
     AVObject object = new AVObject("TestMatchesKeyInQuery");
     object.put("user", AVUser.getCurrentUser());
     int randomValue = new Random().nextInt();
