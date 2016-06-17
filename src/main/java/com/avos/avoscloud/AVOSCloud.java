@@ -15,6 +15,7 @@ import com.avos.avoscloud.internal.InternalSMS;
 import com.avos.avoscloud.internal.impl.EngineAppConfiguration;
 import com.avos.avoscloud.internal.impl.EngineRequestSign;
 import com.avos.avoscloud.internal.impl.Log4j2Implementation;
+import com.avos.avoscloud.internal.impl.SimplePersistence;
 
 /**
  * The AVOSCloud class contains static functions that handle global configuration for the AVOSCloud
@@ -89,6 +90,7 @@ public class AVOSCloud {
         EngineAppConfiguration.instance());
     InternalConfigurationController.globalInstance().setInternalRequestSign(
         EngineRequestSign.instance());
+    InternalConfigurationController.globalInstance().setInternalPersistence(SimplePersistence.instance());
 
     EngineAppConfiguration.instance().applicationId = applicationId;
     EngineAppConfiguration.instance().clientKey = clientKey;
