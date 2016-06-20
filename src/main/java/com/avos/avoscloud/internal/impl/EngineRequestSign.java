@@ -32,7 +32,7 @@ public class EngineRequestSign implements InternalRequestSign {
                 useMasterKey ? EngineAppConfiguration.instance().masterKey : EngineAppConfiguration
                     .instance().clientKey).toString()).toLowerCase());
     result.append(',').append(ts);
-    if (useMasterKey) {
+    if (!useMasterKey) {
       return result.toString();
     } else {
       return result.append(",master").toString();

@@ -16,7 +16,7 @@ public class SimplePersistence implements InternalPersistence {
     return instance;
   }
 
-  protected SimplePersistence() {}
+  SimplePersistence() {}
 
   private static SimplePersistence instance;
 
@@ -83,7 +83,7 @@ public class SimplePersistence implements InternalPersistence {
   @Override
   public boolean getPersistentSettingBoolean(String keyzone, String key, Boolean defaultValue) {
     // TODO Auto-generated method stub
-    return false;
+    return defaultValue;
   }
 
   @Override
@@ -95,13 +95,13 @@ public class SimplePersistence implements InternalPersistence {
   @Override
   public Integer getPersistentSettingInteger(String keyzone, String key, Integer defaultValue) {
     // TODO Auto-generated method stub
-    return null;
+    return defaultValue;
   }
 
   @Override
   public Long getPersistentSettingLong(String keyzone, String key, Long defaultValue) {
     // TODO Auto-generated method stub
-    return null;
+    return defaultValue;
   }
 
   @Override
@@ -117,7 +117,7 @@ public class SimplePersistence implements InternalPersistence {
 
   @Override
   public String getPersistentSettingString(String keyzone, String key, String defaultValue) {
-    return null;
+    return defaultValue;
   }
 
   @Override
