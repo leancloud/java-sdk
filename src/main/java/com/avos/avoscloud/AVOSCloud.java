@@ -121,19 +121,6 @@ public class AVOSCloud {
             .showInternalDebugLog();
   }
 
-  public static StorageType getStorageType() {
-    return InternalConfigurationController.globalInstance().getAppConfiguration().getStorageType();
-  }
-
-  public static void setStorageType(StorageType storageType) {
-    InternalConfigurationController.globalInstance().getAppConfiguration()
-        .setStorageType(storageType);
-  }
-
-  public static void setBaseUrl(final String baseUrl) {
-    InternalConfigurationController.globalInstance().getAppConfiguration().setBaseUrl(baseUrl);
-  }
-
   /**
    * 请求发送短信验证码
    * 
