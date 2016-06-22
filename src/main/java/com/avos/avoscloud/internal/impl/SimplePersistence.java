@@ -16,7 +16,7 @@ public class SimplePersistence implements InternalPersistence {
     return instance;
   }
 
-  SimplePersistence() {}
+  protected SimplePersistence() {}
 
   private static SimplePersistence instance;
 

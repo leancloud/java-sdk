@@ -22,8 +22,12 @@ public class EngineRequestSign implements InternalRequestSign {
 
   @Override
   public String requestSign() {
+    return requestSign(AVUtils.getCurrentTimestamp(), this.useMasterKey);
+  }
+
+  public static String requestSign(long ts, boolean useMasterKey) {
     StringBuilder builder = new StringBuilder();
-    long ts = AVUtils.getCurrentTimestamp();
+
     StringBuilder result = new StringBuilder();
     result.append(AVUtils.md5(
         builder
