@@ -22,8 +22,12 @@ public class EngineRequestSign implements InternalRequestSign {
 
   @Override
   public String requestSign() {
+    return requestSign(AVUtils.getCurrentTimestamp(), this.useMasterKey);
+  }
+
+  public static String requestSign(long ts, boolean useMasterKey) {
     StringBuilder builder = new StringBuilder();
-    long ts = AVUtils.getCurrentTimestamp();
+
     StringBuilder result = new StringBuilder();
     result.append(AVUtils.md5(
         builder
@@ -32,7 +36,7 @@ public class EngineRequestSign implements InternalRequestSign {
                 useMasterKey ? EngineAppConfiguration.instance().masterKey : EngineAppConfiguration
                     .instance().clientKey).toString()).toLowerCase());
     result.append(',').append(ts);
-    if (useMasterKey) {
+    if (!useMasterKey) {
       return result.toString();
     } else {
       return result.append(",master").toString();
