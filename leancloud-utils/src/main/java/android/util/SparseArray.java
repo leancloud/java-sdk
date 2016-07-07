@@ -26,9 +26,13 @@ public class SparseArray<E> {
     keys.add(key);
     Collections.sort(keys);
   }
-
+  
   public E valueAt(int index) {
     int key = keys.get(index);
     return data.get(key);
+  }
+
+  public int size() {
+    return keys.size();
   }
 }
