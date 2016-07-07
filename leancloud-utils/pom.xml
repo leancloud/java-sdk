@@ -4,7 +4,7 @@
 
 	<groupId>cn.leancloud</groupId>
 	<artifactId>leancloud-utils</artifactId>
-	<version>0.0.1-alpha</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>leancloud-utils</name>
