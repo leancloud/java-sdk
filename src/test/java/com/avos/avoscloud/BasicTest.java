@@ -1,10 +1,10 @@
 package com.avos.avoscloud;
 
-import com.avos.avoscloud.internal.InternalConfigurationController;
-import com.avos.avoscloud.internal.InternalFileDownloader;
-
 import junit.framework.Assert;
 import junit.framework.TestCase;
+
+import com.avos.avoscloud.internal.InternalConfigurationController;
+import com.avos.avoscloud.internal.InternalFileDownloader;
 
 public class BasicTest extends TestCase {
   @Override
@@ -14,16 +14,18 @@ public class BasicTest extends TestCase {
 
   public void testAppConfiguration() {
     Assert.assertEquals("uu2P5gNTxGhjyaJGAPPnjCtJ-gzGzoHsz", InternalConfigurationController
-        .globalInstance().getAppConfiguration().applicationId);
+        .globalInstance().getAppConfiguration().getApplicationId());
     Assert.assertEquals("j5lErUd6q7LhPD8CXhfmA2Rg", InternalConfigurationController
-        .globalInstance().getAppConfiguration().clientKey);
+        .globalInstance().getAppConfiguration().getClientKey());
   }
 
   public void testDownloader() {
-    InternalConfigurationController.globalInstance().setDownloaderImplementation(
-        TestDownloader.class);
     Assert.assertNull(InternalConfigurationController.globalInstance().getDownloaderInstance(null,
         null));;
+    InternalConfigurationController.globalInstance().setDownloaderImplementation(
+        TestDownloader.class);
+    Assert.assertNotNull(InternalConfigurationController.globalInstance().getDownloaderInstance(
+        null, null));;
   }
 
   static class TestDownloader implements InternalFileDownloader {
