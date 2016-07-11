@@ -1,19 +1,18 @@
 package com.avos.avoscloud;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.avos.avoscloud.callback.AVServerDateCallback;
-import com.avos.avoscloud.internal.AppConfiguration.StorageType;
 import com.avos.avoscloud.internal.InternalConfigurationController;
 import com.avos.avoscloud.internal.InternalDate;
 import com.avos.avoscloud.internal.InternalSMS;
-import com.avos.avoscloud.internal.impl.EngineAppConfiguration;
+import com.avos.avoscloud.internal.MasterKeyConfiguration;
 import com.avos.avoscloud.internal.impl.EngineRequestSign;
+import com.avos.avoscloud.internal.impl.JavaAppConfiguration;
 import com.avos.avoscloud.internal.impl.Log4j2Implementation;
 import com.avos.avoscloud.internal.impl.SimplePersistence;
 
@@ -60,6 +59,9 @@ public class AVOSCloud {
     SerializeConfig.getGlobalInstance().put(AVUser.class, AVObjectSerializer.instance);
     InternalConfigurationController.globalInstance().setInternalLogger(
         Log4j2Implementation.instance());
+
+    InternalConfigurationController.globalInstance().setInternalPersistence(
+        SimplePersistence.instance());
   }
 
   private AVOSCloud() {}
@@ -85,17 +87,21 @@ public class AVOSCloud {
    * @param clientKey The client key provided in the AVOSCloud dashboard.
    * @param masterKey The master key provided in the AVOSCloud dashboard.
    */
+
   public static void initialize(String applicationId, String clientKey, String masterKey) {
+
     InternalConfigurationController.globalInstance().setAppConfiguration(
-        EngineAppConfiguration.instance());
+        JavaAppConfiguration.instance());
     InternalConfigurationController.globalInstance().setInternalRequestSign(
         EngineRequestSign.instance());
-    InternalConfigurationController.globalInstance().setInternalPersistence(SimplePersistence.instance());
 
-    EngineAppConfiguration.instance().applicationId = applicationId;
-    EngineAppConfiguration.instance().clientKey = clientKey;
-    EngineAppConfiguration.instance().masterKey = masterKey;
-    AppRouterManager.getInstance().fetchRouter(false);
+    InternalConfigurationController.globalInstance().getAppConfiguration()
+        .setApplicationId(applicationId);
+    InternalConfigurationController.globalInstance().getAppConfiguration().setClientKey(clientKey);
+    if (InternalConfigurationController.globalInstance().getAppConfiguration() instanceof MasterKeyConfiguration) {
+      ((MasterKeyConfiguration) InternalConfigurationController.globalInstance()
+          .getAppConfiguration()).setMasterKey(masterKey);
+    }
   }
 
   public static void useAVCloudUS() {
