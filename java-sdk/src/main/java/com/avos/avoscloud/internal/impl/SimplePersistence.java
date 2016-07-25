@@ -162,7 +162,12 @@ public class SimplePersistence implements InternalPersistence {
 
   @Override
   public <T extends AVUser> T getCurrentUser(Class<T> userClass) {
-    return (T) currentUser;
+    if (currentUser != null) {
+      return (T) AVUser.cast(currentUser, userClass);
+    } else {
+      return null;
+    }
+
   }
 
 }
