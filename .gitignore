@@ -1,2 +1,5 @@
 java-sdk/target/
+.project
+.settings
+.classpath
 leancloud-utils/target

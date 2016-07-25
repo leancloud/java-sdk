@@ -4,7 +4,7 @@
 
 	<groupId>cn.leancloud.java</groupId>
 	<artifactId>java-sdk</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<packaging>jar</packaging>
 
 	<name>java-sdk</name>
@@ -63,12 +63,12 @@
 		<dependency>
 			<groupId>cn.leancloud</groupId>
 			<artifactId>leancloud-common</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>cn.leancloud</groupId>
 			<artifactId>leancloud-utils</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.2-alpha</version>
 		</dependency>
 
 		<dependency>
