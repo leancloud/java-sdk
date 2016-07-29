@@ -13,16 +13,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
 import org.json.JSONArray;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.data.Armor;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * Unit test for simple App.
@@ -592,6 +592,17 @@ public class OjbectTest extends TestCase {
 
     query.whereEqualTo("int", 1);
     object.save();
+  }
+
+  public void testNullInitialization() throws Exception {
+    AVOSCloud.initialize(null, null, null);
+    AVObject object = new AVObject("test");
+    try {
+      object.save();
+    } catch (AVException e) {
+      assertEquals(AVException.NOT_INITIALIZED, e.getCode());
+    }
+    TestApp.init();
   }
 
 }
