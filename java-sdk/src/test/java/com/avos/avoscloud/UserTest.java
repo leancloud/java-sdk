@@ -3,11 +3,11 @@ package com.avos.avoscloud;
 import java.util.List;
 import java.util.Random;
 
-import com.avos.avoscloud.data.SubUser;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import com.avos.avoscloud.data.SubUser;
 
 public class UserTest extends TestCase {
   /**
@@ -361,5 +361,19 @@ public class UserTest extends TestCase {
     user = AVUser.getCurrentUser(SubUser.class);
     assertEquals("zengzhu", user.getUsername());
     assertTrue(user.isAuthenticated());
+  }
+
+  public void testSessionToken() throws Exception {
+    AVUser.logIn("zengzhu", "12345678");
+    final String sessionToken = AVUser.getCurrentUser().getSessionToken();
+    AVUser.changeCurrentUser(null, true);
+    assertNull(AVUser.getCurrentUser());
+    try {
+      AVUser user = AVUser.becomeWithSessionToken(sessionToken);
+      assertNotNull(user);
+      assertEquals(user.getObjectId(), AVUser.getCurrentUser().getObjectId());
+    } catch (Exception e) {
+      fail();
+    }
   }
 }
