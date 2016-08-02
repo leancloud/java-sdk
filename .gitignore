@@ -1,5 +1,11 @@
 java-sdk/target/
+java-sdk/.project
+java-sdk/.classpath
+java-sdk/.settings
 .project
 .settings
 .classpath
 leancloud-utils/target
+leancloud-utils/.project
+leancloud-utils/.settings
+leancloud-utils/.classpath
