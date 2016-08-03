@@ -25,7 +25,7 @@ public class EngineRequestSign implements InternalRequestSign {
 
   @Override
   public String requestSign() {
-    return requestSign(AVUtils.getCurrentTimestamp(), this.useMasterKey);
+    return requestSign(AVUtils.getCurrentTimestamp(), this.isUserMasterKey());
   }
 
   public static String requestSign(long ts, boolean useMasterKey) {
@@ -53,6 +53,10 @@ public class EngineRequestSign implements InternalRequestSign {
 
   public void setUserMasterKey(boolean shouldUseMasterKey) {
     this.useMasterKey = shouldUseMasterKey;
+  }
+
+  protected boolean isUserMasterKey() {
+    return this.useMasterKey;
   }
 
 }

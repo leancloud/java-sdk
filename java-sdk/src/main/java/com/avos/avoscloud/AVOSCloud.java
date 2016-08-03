@@ -89,9 +89,10 @@ public class AVOSCloud {
    */
 
   public static void initialize(String applicationId, String clientKey, String masterKey) {
-
-    InternalConfigurationController.globalInstance().setAppConfiguration(
-        JavaAppConfiguration.instance());
+    if (!(InternalConfigurationController.globalInstance().getAppConfiguration() instanceof JavaAppConfiguration)) {
+      InternalConfigurationController.globalInstance().setAppConfiguration(
+          JavaAppConfiguration.instance());
+    }
     InternalConfigurationController.globalInstance().setInternalRequestSign(
         EngineRequestSign.instance());
 
