@@ -29,8 +29,8 @@ public class JavaAppConfiguration extends AppConfiguration implements MasterKeyC
   @Override
   public boolean isConfigured() {
     return !(AVUtils.isBlankString(this.getApplicationId())
-        || AVUtils.isBlankString(this.getClientKey()) || (EngineRequestSign.instance()
-        .isUserMasterKey() && AVUtils.isBlankString(this.getMasterKey())));
+        || AVUtils.isBlankString(this.getClientKey()) || (JavaRequestSignImplementation.instance()
+        .isUseMasterKey() && AVUtils.isBlankString(this.getMasterKey())));
   }
 
   @Override

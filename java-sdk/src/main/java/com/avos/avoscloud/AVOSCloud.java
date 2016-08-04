@@ -11,7 +11,7 @@ import com.avos.avoscloud.internal.InternalConfigurationController;
 import com.avos.avoscloud.internal.InternalDate;
 import com.avos.avoscloud.internal.InternalSMS;
 import com.avos.avoscloud.internal.MasterKeyConfiguration;
-import com.avos.avoscloud.internal.impl.EngineRequestSign;
+import com.avos.avoscloud.internal.impl.JavaRequestSignImplementation;
 import com.avos.avoscloud.internal.impl.JavaAppConfiguration;
 import com.avos.avoscloud.internal.impl.Log4j2Implementation;
 import com.avos.avoscloud.internal.impl.SimplePersistence;
@@ -83,7 +83,7 @@ public class AVOSCloud {
     InternalConfigurationController.globalInstance().setAppConfiguration(
         JavaAppConfiguration.instance());
     InternalConfigurationController.globalInstance().setInternalRequestSign(
-        EngineRequestSign.instance());
+        JavaRequestSignImplementation.instance());
 
     InternalConfigurationController.globalInstance().getAppConfiguration()
         .setApplicationId(applicationId);
@@ -216,6 +216,6 @@ public class AVOSCloud {
   }
 
   public static void setShouldUseMasterKey(boolean should) {
-    EngineRequestSign.instance().setUserMasterKey(should);
+    JavaRequestSignImplementation.instance().setUseMasterKey(should);
   }
 }

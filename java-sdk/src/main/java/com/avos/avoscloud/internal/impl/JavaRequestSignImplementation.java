@@ -6,26 +6,26 @@ import com.avos.avoscloud.internal.InternalConfigurationController;
 import com.avos.avoscloud.internal.InternalRequestSign;
 import com.avos.avoscloud.internal.MasterKeyConfiguration;
 
-public class EngineRequestSign implements InternalRequestSign {
+public class JavaRequestSignImplementation implements InternalRequestSign {
 
   boolean useMasterKey = false;
 
-  public static EngineRequestSign instance() {
-    synchronized (EngineRequestSign.class) {
+  public static JavaRequestSignImplementation instance() {
+    synchronized (JavaRequestSignImplementation.class) {
       if (instance == null) {
-        instance = new EngineRequestSign();
+        instance = new JavaRequestSignImplementation();
       }
     }
     return instance;
   }
 
-  private EngineRequestSign() {}
+  private JavaRequestSignImplementation() {}
 
-  private static EngineRequestSign instance;
+  private static JavaRequestSignImplementation instance;
 
   @Override
   public String requestSign() {
-    return requestSign(AVUtils.getCurrentTimestamp(), this.isUserMasterKey());
+    return requestSign(AVUtils.getCurrentTimestamp(), this.isUseMasterKey());
   }
 
   public static String requestSign(long ts, boolean useMasterKey) {
@@ -51,11 +51,11 @@ public class EngineRequestSign implements InternalRequestSign {
     }
   }
 
-  public void setUserMasterKey(boolean shouldUseMasterKey) {
+  public void setUseMasterKey(boolean shouldUseMasterKey) {
     this.useMasterKey = shouldUseMasterKey;
   }
 
-  protected boolean isUserMasterKey() {
+  protected boolean isUseMasterKey() {
     return this.useMasterKey;
   }
 
