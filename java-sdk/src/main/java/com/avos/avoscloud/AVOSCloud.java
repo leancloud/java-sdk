@@ -74,25 +74,14 @@ public class AVOSCloud {
    * </p>
    * 
    * <pre>
-   *         import android.app.Application;
-   *         import com.avos.avoscloud.AVOSCloud;
-   * 
-   *         public class MyApplication extends Application {
-   *             public void onCreate() {
-   *                 AVOSCloud.initialize(this, "your application id", "your client key");
-   *             }
-   *         }
-   * @param context The active Context for your application.
    * @param applicationId  The application id provided in the AVOSCloud dashboard.
    * @param clientKey The client key provided in the AVOSCloud dashboard.
    * @param masterKey The master key provided in the AVOSCloud dashboard.
    */
 
   public static void initialize(String applicationId, String clientKey, String masterKey) {
-    if (!(InternalConfigurationController.globalInstance().getAppConfiguration() instanceof JavaAppConfiguration)) {
-      InternalConfigurationController.globalInstance().setAppConfiguration(
-          JavaAppConfiguration.instance());
-    }
+    InternalConfigurationController.globalInstance().setAppConfiguration(
+        JavaAppConfiguration.instance());
     InternalConfigurationController.globalInstance().setInternalRequestSign(
         EngineRequestSign.instance());
 
