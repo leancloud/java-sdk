@@ -11,7 +11,7 @@ import com.avos.avoscloud.internal.InternalConfigurationController;
 import com.avos.avoscloud.internal.InternalDate;
 import com.avos.avoscloud.internal.InternalSMS;
 import com.avos.avoscloud.internal.MasterKeyConfiguration;
-import com.avos.avoscloud.internal.impl.EngineRequestSign;
+import com.avos.avoscloud.internal.impl.JavaRequestSignImplementation;
 import com.avos.avoscloud.internal.impl.JavaAppConfiguration;
 import com.avos.avoscloud.internal.impl.Log4j2Implementation;
 import com.avos.avoscloud.internal.impl.SimplePersistence;
@@ -74,26 +74,16 @@ public class AVOSCloud {
    * </p>
    * 
    * <pre>
-   *         import android.app.Application;
-   *         import com.avos.avoscloud.AVOSCloud;
-   * 
-   *         public class MyApplication extends Application {
-   *             public void onCreate() {
-   *                 AVOSCloud.initialize(this, "your application id", "your client key");
-   *             }
-   *         }
-   * @param context The active Context for your application.
    * @param applicationId  The application id provided in the AVOSCloud dashboard.
    * @param clientKey The client key provided in the AVOSCloud dashboard.
    * @param masterKey The master key provided in the AVOSCloud dashboard.
    */
 
   public static void initialize(String applicationId, String clientKey, String masterKey) {
-
     InternalConfigurationController.globalInstance().setAppConfiguration(
         JavaAppConfiguration.instance());
     InternalConfigurationController.globalInstance().setInternalRequestSign(
-        EngineRequestSign.instance());
+        JavaRequestSignImplementation.instance());
 
     InternalConfigurationController.globalInstance().getAppConfiguration()
         .setApplicationId(applicationId);
@@ -226,6 +216,6 @@ public class AVOSCloud {
   }
 
   public static void setShouldUseMasterKey(boolean should) {
-    EngineRequestSign.instance().setUserMasterKey(should);
+    JavaRequestSignImplementation.instance().setUseMasterKey(should);
   }
 }

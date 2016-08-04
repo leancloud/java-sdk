@@ -5,7 +5,7 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVRelation;
 import com.avos.avoscloud.AVUser;
 
-@JSONType(ignores = {"blackListRelation"},asm = false)
+@JSONType(ignores = {"blackListRelation"}, asm = false)
 public class SubUser extends AVUser {
   public AVObject getArmor() {
     return getAVObject("armor");
@@ -26,14 +26,4 @@ public class SubUser extends AVUser {
   public AVRelation<AVObject> getBlackListRelation() {
     return this.getRelation("blacklist");
   }
-
-  // public void addBlackList(AVObject o) {
-  // this.getBlackListRelation().add(o);
-  // this.saveInBackground();
-  // }
-  //
-  // public void removeBlackList(AVObject o) {
-  // this.getBlackListRelation().remove(o);
-  // this.saveInBackground();
-  // }
 }

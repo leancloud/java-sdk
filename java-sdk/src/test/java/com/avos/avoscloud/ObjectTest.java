@@ -27,13 +27,13 @@ import com.avos.avoscloud.data.Armor;
 /**
  * Unit test for simple App.
  */
-public class OjbectTest extends TestCase {
+public class ObjectTest extends TestCase {
   /**
    * Create the test case
    *
    * @param testName name of the test case
    */
-  public OjbectTest(String testName) {
+  public ObjectTest(String testName) {
     super(testName);
   }
 
@@ -46,7 +46,7 @@ public class OjbectTest extends TestCase {
    * @return the suite of tests being tested
    */
   public static Test suite() {
-    return new TestSuite(OjbectTest.class);
+    return new TestSuite(ObjectTest.class);
   }
 
   static private String testTableName = "GameScoreFromAndroid";
