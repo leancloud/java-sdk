@@ -8,9 +8,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import com.avos.avoscloud.data.Armor;
-
 import junit.framework.TestCase;
+
+import com.avos.avoscloud.data.Armor;
+import com.avos.avoscloud.data.Player;
 
 public class QueryTest extends TestCase {
   static String tableName = "GameScoreFromAndroid";
@@ -455,6 +456,33 @@ public class QueryTest extends TestCase {
     }
   }
 
+  public void testAVObjectArraryQuery2() throws Exception {
+    Armor i = new Armor();
+    Armor j = new Armor();
+    i.put("durability", 100);
+    j.put("durability", 200);
+
+    i.save();
+    j.save();
+
+    Player player = new Player();
+    player.addArmor(i);
+    player.addArmor(j);
+    player.save();
+
+
+    AVQuery<Player> query = Player.getQuery(Player.class);
+    query.whereEqualTo("objectId", player.getObjectId());
+    query.include("armors");
+    List<Player> result = query.find();
+    for (Player item : result) {
+      List<Armor> armors = item.getArmors();
+      assertEquals(2, armors.size());
+      assertEquals(100, armors.get(0).getDurability());
+      assertEquals(200, armors.get(1).getDurability());
+    }
+  }
+
   public void testWhereMatchesKeyInQuery() throws Exception {
     AVUser.logIn("zengzhu", "12345678");
     String gudongObjectId = AVUser.getCurrentUser().getObjectId();
@@ -465,7 +493,7 @@ public class QueryTest extends TestCase {
     newUser.setUsername(AVUtils.getRandomString(10) + System.currentTimeMillis());
     newUser.setPassword(AVUtils.getRandomString(10));
     newUser.signUp();
-    AVUser.getCurrentUser().follow(gudongObjectId,null);
+    AVUser.getCurrentUser().follow(gudongObjectId, null);
     AVObject object = new AVObject("TestMatchesKeyInQuery");
     object.put("user", AVUser.getCurrentUser());
     int randomValue = new Random().nextInt();
