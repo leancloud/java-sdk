@@ -11,8 +11,8 @@ import com.avos.avoscloud.internal.InternalConfigurationController;
 import com.avos.avoscloud.internal.InternalDate;
 import com.avos.avoscloud.internal.InternalSMS;
 import com.avos.avoscloud.internal.MasterKeyConfiguration;
-import com.avos.avoscloud.internal.impl.JavaRequestSignImplementation;
 import com.avos.avoscloud.internal.impl.JavaAppConfiguration;
+import com.avos.avoscloud.internal.impl.JavaRequestSignImplementation;
 import com.avos.avoscloud.internal.impl.Log4j2Implementation;
 import com.avos.avoscloud.internal.impl.SimplePersistence;
 
@@ -57,11 +57,6 @@ public class AVOSCloud {
 
     SerializeConfig.getGlobalInstance().put(AVObject.class, AVObjectSerializer.instance);
     SerializeConfig.getGlobalInstance().put(AVUser.class, AVObjectSerializer.instance);
-    InternalConfigurationController.globalInstance().setInternalLogger(
-        Log4j2Implementation.instance());
-
-    InternalConfigurationController.globalInstance().setInternalPersistence(
-        SimplePersistence.instance());
   }
 
   private AVOSCloud() {}
@@ -84,6 +79,10 @@ public class AVOSCloud {
         JavaAppConfiguration.instance());
     InternalConfigurationController.globalInstance().setInternalRequestSign(
         JavaRequestSignImplementation.instance());
+    InternalConfigurationController.globalInstance().setInternalPersistence(
+        SimplePersistence.instance());
+    InternalConfigurationController.globalInstance().setInternalLogger(
+        Log4j2Implementation.instance());
 
     InternalConfigurationController.globalInstance().getAppConfiguration()
         .setApplicationId(applicationId);
