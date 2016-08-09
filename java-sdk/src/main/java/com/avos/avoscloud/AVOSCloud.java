@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.parser.ParserConfig;
-import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.avos.avoscloud.callback.AVServerDateCallback;
 import com.avos.avoscloud.internal.InternalConfigurationController;
 import com.avos.avoscloud.internal.InternalDate;
@@ -52,11 +50,6 @@ public class AVOSCloud {
 
   static {
     JSON.DEFFAULT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    ParserConfig.getGlobalInstance().putDeserializer(AVObject.class, AVObjectDeserializer.instance);
-    ParserConfig.getGlobalInstance().putDeserializer(AVUser.class, AVObjectDeserializer.instance);
-
-    SerializeConfig.getGlobalInstance().put(AVObject.class, AVObjectSerializer.instance);
-    SerializeConfig.getGlobalInstance().put(AVUser.class, AVObjectSerializer.instance);
   }
 
   private AVOSCloud() {}
