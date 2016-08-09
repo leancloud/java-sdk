@@ -68,14 +68,13 @@ public class AVOSCloud {
    */
 
   public static void initialize(String applicationId, String clientKey, String masterKey) {
-    InternalConfigurationController.globalInstance().setAppConfiguration(
-        JavaAppConfiguration.instance());
-    InternalConfigurationController.globalInstance().setInternalRequestSign(
-        JavaRequestSignImplementation.instance());
-    InternalConfigurationController.globalInstance().setInternalPersistence(
-        SimplePersistence.instance());
-    InternalConfigurationController.globalInstance().setInternalLogger(
-        Log4j2Implementation.instance());
+    InternalConfigurationController.Builder builder = new InternalConfigurationController.Builder();
+
+    builder.setAppConfiguration(JavaAppConfiguration.instance())
+        .setInternalRequestSign(JavaRequestSignImplementation.instance())
+        .setInternalPersistence(SimplePersistence.instance())
+        .setInternalLogger(Log4j2Implementation.instance());
+    builder.build();
 
     InternalConfigurationController.globalInstance().getAppConfiguration()
         .setApplicationId(applicationId);

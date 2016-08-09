@@ -22,8 +22,6 @@ public class BasicTest extends TestCase {
   public void testDownloader() {
     Assert.assertNull(InternalConfigurationController.globalInstance().getDownloaderInstance(null,
         null));;
-    InternalConfigurationController.globalInstance().setDownloaderImplementation(
-        TestDownloader.class);
     Assert.assertNotNull(InternalConfigurationController.globalInstance().getDownloaderInstance(
         null, null));;
   }

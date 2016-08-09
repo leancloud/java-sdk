@@ -1,11 +1,15 @@
 package com.avos.avoscloud;
 
+import com.avos.avoscloud.BasicTest.TestDownloader;
 import com.avos.avoscloud.data.Armor;
 import com.avos.avoscloud.data.Player;
+import com.avos.avoscloud.internal.InternalConfigurationController;
 
 public class TestApp {
 
   public static void init() {
+    InternalConfigurationController.Builder builder = new InternalConfigurationController.Builder();
+    builder.setDownloaderImplementation(TestDownloader.class).build();;
     AVOSCloud.setDebugLogEnabled(true);
     AVObject.registerSubclass(Armor.class);
     AVObject.registerSubclass(Player.class);
