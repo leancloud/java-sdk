@@ -51,7 +51,6 @@ public class JavaAppConfiguration extends AppConfiguration implements MasterKeyC
   @Override
   public void setMasterKey(String masterKey) {
     this.masterKey = masterKey;
-    this.setEnv();
   }
 
   protected void setEnv() {
