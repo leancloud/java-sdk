@@ -20,8 +20,6 @@ public class BasicTest extends TestCase {
   }
 
   public void testDownloader() {
-    Assert.assertNull(InternalConfigurationController.globalInstance().getDownloaderInstance(null,
-        null));;
     Assert.assertNotNull(InternalConfigurationController.globalInstance().getDownloaderInstance(
         null, null));;
   }
@@ -42,7 +40,6 @@ public class BasicTest extends TestCase {
 
     @Override
     public boolean cancel(boolean mayInterruptIfRunning) {
-      // TODO Auto-generated method stub
       return false;
     }
 
