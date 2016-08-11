@@ -475,11 +475,13 @@ public class QueryTest extends TestCase {
     query.whereEqualTo("objectId", player.getObjectId());
     query.include("armors");
     List<Player> result = query.find();
+    // 因为addArmor用了addUnique，所以导致次序没法保证了
     for (Player item : result) {
       List<Armor> armors = item.getArmors();
       assertEquals(2, armors.size());
-      assertEquals(100, armors.get(0).getDurability());
-      assertEquals(200, armors.get(1).getDurability());
+      assertTrue(armors.get(0).getDurability() == 100 || armors.get(0).getDurability() == 200);
+      assertTrue(armors.get(0).getDurability() == 100 ? armors.get(1).getDurability() == 200
+          : armors.get(1).getDurability() == 100);
     }
   }
 
