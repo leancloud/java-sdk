@@ -83,7 +83,7 @@ public class AVOSCloud {
       ((MasterKeyConfiguration) InternalConfigurationController.globalInstance()
           .getAppConfiguration()).setMasterKey(masterKey);
     }
-    AppRouterManager.getInstance().fetchRouter(true);
+    AppRouterManager.getInstance().fetchRouter(false);
   }
 
   public static void useAVCloudUS() {
