@@ -83,14 +83,17 @@ public class AVOSCloud {
       ((MasterKeyConfiguration) InternalConfigurationController.globalInstance()
           .getAppConfiguration()).setMasterKey(masterKey);
     }
+    AppRouterManager.getInstance().fetchRouter(true);
   }
 
   public static void useAVCloudUS() {
-    PaasClient.useAVCloudUS();
+    JavaAppConfiguration.instance().configureService(AVOSServices.STORAGE_SERVICE.toString(),
+        "https://us-api.leancloud.cn");
   }
 
   public static void useAVCloudCN() {
-    PaasClient.useAVCloudCN();
+    JavaAppConfiguration.instance().configureService(AVOSServices.STORAGE_SERVICE.toString(),
+        "https://api.leancloud.cn");
   }
 
   public static boolean showInternalDebugLog() {
