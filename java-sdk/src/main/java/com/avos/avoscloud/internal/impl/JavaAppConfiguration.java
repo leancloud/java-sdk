@@ -2,7 +2,6 @@ package com.avos.avoscloud.internal.impl;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
-import com.avos.avoscloud.AVOSServices;
 import com.avos.avoscloud.AVUtils;
 import com.avos.avoscloud.AppRouterManager;
 import com.avos.avoscloud.internal.AppConfiguration;
@@ -54,7 +53,6 @@ public class JavaAppConfiguration extends AppConfiguration implements MasterKeyC
   }
 
   protected void setEnv() {
-    serviceHostMap.put(AVOSServices.STORAGE_SERVICE.toString(), AppRouterManager.getInstance()
-        .getAPIServer());
+    AppRouterManager.getInstance().fetchRouter(false);
   }
 }
