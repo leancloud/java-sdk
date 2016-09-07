@@ -83,32 +83,27 @@ public class AVOSCloud {
       ((MasterKeyConfiguration) InternalConfigurationController.globalInstance()
           .getAppConfiguration()).setMasterKey(masterKey);
     }
-    AppRouterManager.getInstance().fetchRouter(false);
   }
 
   public static void useAVCloudUS() {
-    JavaAppConfiguration.instance().configureService(AVOSServices.STORAGE_SERVICE.toString(),
-        "https://us-api.leancloud.cn");
+    PaasClient.useAVCloudUS();
   }
 
   public static void useAVCloudCN() {
-    JavaAppConfiguration.instance().configureService(AVOSServices.STORAGE_SERVICE.toString(),
-        "https://api.leancloud.cn");
+    PaasClient.useAVCloudCN();
   }
 
   public static boolean showInternalDebugLog() {
-    return InternalConfigurationController.globalInstance().getInternalLogger()
-        .showInternalDebugLog();
+    return Log4j2Implementation.instance().showInternalDebugLog();
   }
 
   public static void setDebugLogEnabled(boolean enable) {
-    InternalConfigurationController.globalInstance().getInternalLogger().setDebugEnabled(enable);
+    Log4j2Implementation.instance().setDebugEnabled(enable);
   }
 
   public static boolean isDebugLogEnabled() {
-    return InternalConfigurationController.globalInstance().getInternalLogger().isDebugEnabled()
-        || InternalConfigurationController.globalInstance().getInternalLogger()
-            .showInternalDebugLog();
+    return Log4j2Implementation.instance().isDebugEnabled()
+        || Log4j2Implementation.instance().showInternalDebugLog();
   }
 
   /**

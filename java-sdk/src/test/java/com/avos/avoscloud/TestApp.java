@@ -33,4 +33,12 @@ public class TestApp {
     AVOSCloud.initialize("DV8dqMSRqujdz6hI7NFtCfEq-9Nh9j0Va", "IPvWcVpYBvkHuk6QYc9Jvg3F",
         "atXAmIVlQoBDBLqumMgzXhcY");
   }
+
+  public static void initForUS() {
+    AVOSCloud.setDebugLogEnabled(true);
+    AVOSCloud.useAVCloudUS();
+    AVOSCloud.initialize("cswk4i7a7fgprutnxr9cldg6f7d9yr4jpsak2dxlm94vgaoy",
+        "7u1kavw2y2805kue7pxyxxszxyj46cbf3zxmde9n6exfpfpo",
+        "dtq0s5sjdf4op3nfnqtu2rqbk4yef6h0f1pysagtsjod8g2s");
+  }
 }
