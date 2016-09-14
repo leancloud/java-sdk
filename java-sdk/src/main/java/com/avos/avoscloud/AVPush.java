@@ -67,7 +67,7 @@ public class AVPush {
   /**
    * 返回推送后创建的_Notification对象。
    * 
-   * @return
+   * @return _Notification对象
    */
   public AVObject getNotification() {
     return notification;
@@ -327,6 +327,8 @@ public class AVPush {
    * Sets the channel on which this push notification will be sent. The channel name must start with
    * a letter and contain only letters, numbers, dashes, and underscores. A push can either have
    * channels or a query. Setting this will unset the query.
+   * 
+   * @param channel set push channel
    */
   public void setChannel(String channel) {
     channelSet.clear();
@@ -337,6 +339,8 @@ public class AVPush {
    * Sets the collection of channels on which this push notification will be sent. Each channel name
    * must start with a letter and contain only letters, numbers, dashes, and underscores. A push can
    * either have channels or a query. Setting this will unset the query.
+   * 
+   * @param channels set push channels
    */
   public void setChannels(Collection<String> channels) {
     channelSet.clear();
@@ -347,7 +351,7 @@ public class AVPush {
    * Sets the entire data of the push message. See the push guide for more details on the data
    * format. This will overwrite any data specified in AVPush.setMessage(String).
    * 
-   * @since 1.4.4
+   * @param data push data
    */
   public void setData(Map<String, Object> data) {
     this.pushData.put("data", data);
@@ -356,6 +360,8 @@ public class AVPush {
   /**
    * Sets the entire data of the push message. See the push guide for more details on the data
    * format. This will overwrite any data specified in AVPush.setMessage(String).
+   * 
+   * @param data push data
    */
   public void setData(JSONObject data) {
     try {
@@ -391,6 +397,8 @@ public class AVPush {
    * sent, or which come online before the expiration time is reached. Because device clocks are not
    * guaranteed to be accurate, most applications should instead use
    * AVPush.setExpirationTimeInterval(long).
+   * 
+   * @param time expire date
    */
   public void setExpirationTime(long time) {
     this.expirationTime = time;
@@ -402,6 +410,8 @@ public class AVPush {
    * sent, or which come online within the given number of seconds of the notification being
    * received by AVOSCloud's server. An interval which is less than or equal to zero indicates that
    * the message should only be sent to devices which are currently online.
+   * 
+   * @param timeInterval expirationTimeInterval
    */
   public void setExpirationTimeInterval(long timeInterval) {
     this.expirationTimeInterval = timeInterval;
@@ -410,6 +420,8 @@ public class AVPush {
   /**
    * Sets the message that will be shown in the notification. This will overwrite any data specified
    * in AVPush.setData(JSONObject).
+   * 
+   * @param message set push message
    */
   public void setMessage(String message) {
     pushData.clear();
@@ -460,7 +472,7 @@ public class AVPush {
    * 
    * 请在设置cql的同时，不要设置pushTarget(ios,android,wp)
    * 
-   * @param cql
+   * @param cql cql for push
    * @since 2.6.7
    */
   public void setCloudQuery(String cql) {
