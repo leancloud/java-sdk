@@ -31,7 +31,7 @@ public class AVOSCloud {
   /**
    * Set network timeout in milliseconds.default is 10 seconds.
    * 
-   * @param timeoutInMills
+   * @param timeoutInMills 超时时间
    */
   public static void setNetworkTimeout(int timeoutInMills) {
     InternalConfigurationController.globalInstance().getClientConfiguration()
@@ -41,7 +41,7 @@ public class AVOSCloud {
   /**
    * Returns the network timeout in milliseconds.It's 15 seconds by default.
    * 
-   * @return
+   * @return 超时时间
    */
   public static int getNetworkTimeout() {
     return InternalConfigurationController.globalInstance().getClientConfiguration()
@@ -61,8 +61,7 @@ public class AVOSCloud {
    * AVOSCloud.initialize in each of your onCreate methods. An example:
    * </p>
    * 
-   * <pre>
-   * @param applicationId  The application id provided in the AVOSCloud dashboard.
+   * @param applicationId The application id provided in the AVOSCloud dashboard.
    * @param clientKey The client key provided in the AVOSCloud dashboard.
    * @param masterKey The master key provided in the AVOSCloud dashboard.
    */
@@ -117,7 +116,7 @@ public class AVOSCloud {
    * @param name　应用名,值为null 则默认是您的应用名
    * @param op　　验证码的目标操作，值为null,则默认为“短信验证”
    * @param ttl　验证码过期时间,单位分钟。如果是0，则默认为10分钟
-   * 
+   * @throws AVException 发送短信异常
    */
   public static void requestSMSCode(String phone, String name, String op, int ttl)
       throws AVException {
@@ -131,7 +130,7 @@ public class AVOSCloud {
    * @param phone 目标手机号码(必选)
    * @param templateName 短信模板名称
    * @param env 需要注入的变量env
-   * @throws AVException
+   * @throws AVException 发送短信异常
    */
   public static void requestSMSCode(String phone, String templateName, Map<String, Object> env)
       throws AVException {
@@ -146,7 +145,7 @@ public class AVOSCloud {
    * 
    * 
    * @param phone　目标手机号码
-   * 
+   * @throws AVException 发送短信异常
    */
   public static void requestSMSCode(String phone) throws AVException {
     InternalSMS.requestSMSCode(phone, null, null, 0);
@@ -156,7 +155,7 @@ public class AVOSCloud {
    * 请求发送语音验证码，验证码会以电话形式打给目标手机
    *
    * @param phoneNumber 目标手机号
-   * @throws AVException
+   * @throws AVException 发送短信异常
    */
   public static void requestVoiceCode(String phoneNumber) throws AVException {
     InternalSMS.requestVoiceCode(phoneNumber, null);
@@ -168,7 +167,7 @@ public class AVOSCloud {
    * 
    * @param code 验证码
    * @param mobilePhoneNumber 手机号码
-   * @throws AVException
+   * @throws AVException 发送短信异常
    */
   public static void verifySMSCode(String code, String mobilePhoneNumber) throws AVException {
     InternalSMS.verifySMSCode(code, mobilePhoneNumber);
@@ -179,7 +178,7 @@ public class AVOSCloud {
    *
    * @param code 验证码
    * @param mobilePhoneNumber 手机号码
-   * @throws AVException
+   * @throws AVException 发送短信异常
    */
   public static void verifyCode(String code, String mobilePhoneNumber) throws AVException {
     InternalSMS.verifySMSCode(code, mobilePhoneNumber);
@@ -188,8 +187,8 @@ public class AVOSCloud {
   /**
    * 获取服务器端当前时间
    * 
-   * @return
-   * @throws AVException
+   * @return 服务器端当前时间
+   * @throws AVException 发送短信异常
    */
   public static Date getServerDate() throws AVException {
     return InternalDate.getServerDate();
@@ -198,7 +197,7 @@ public class AVOSCloud {
   /**
    * 获取服务器端当前时间
    * 
-   * @param callback
+   * @param callback 获取时间回调
    */
   public static void getServerDateInBackground(AVServerDateCallback callback) {
     InternalDate.getServerDateInBackground(callback);
