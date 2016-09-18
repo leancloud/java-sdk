@@ -42,6 +42,6 @@ repositories {
 add dependency
 
 ``` gradle
-compile 'cn.leancloud.java:java-sdk:0.1.1'
+compile 'cn.leancloud.java:java-sdk:0.1.+'
 
 ```
