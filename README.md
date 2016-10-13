@@ -24,24 +24,21 @@ leancloud-utils is the mock interface for android platform features which doesn'
 
 ### maven
 
+add dependency:
 
+``` xml
+    <dependency>
+      <groupId>cn.leancloud</groupId>
+      <artifactId>java-sdk</artifactId>
+      <version>0.1.6</version>
+    </dependency>
+```
 
 ### gradle
 
-Add LeanCloud repository
+add dependency:
 
 ``` gradle
-repositories {
-        maven {
-            url "http://mvn.leancloud.cn/nexus/content/repositories/releases"
-        }
-    }
-```
-
-
-add dependency
-
-``` gradle
-compile 'cn.leancloud.java:java-sdk:0.1.+'
+compile 'cn.leancloud:java-sdk:0.1.+'
 
 ```
