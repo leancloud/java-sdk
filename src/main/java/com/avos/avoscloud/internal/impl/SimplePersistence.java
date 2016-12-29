@@ -1,6 +1,11 @@
 package com.avos.avoscloud.internal.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.internal.InternalPersistence;
@@ -38,35 +43,67 @@ public class SimplePersistence implements InternalPersistence {
 
   @Override
   public boolean saveContentToFile(String content, File fileForSave) {
-    return false;
+    return saveContentToFile(content.getBytes(), fileForSave);
   }
 
   @Override
   public boolean saveContentToFile(byte[] content, File fileForSave) {
-    return false;
+    FileOutputStream fos;
+    try {
+      fos = new FileOutputStream(fileForSave);
+      fos.write(content);
+      fos.close();
+      return true;
+    } catch (IOException e) {
+      e.printStackTrace();
+      return false;
+    }
   }
 
   @Override
-  public void saveToDocumentDir(String content, String folderName, String fileName) {}
+  public void saveToDocumentDir(String content, String folderName, String fileName) {
+    saveContentToFile(content.getBytes(), new File(folderName, fileName));
+  }
 
   @Override
   public String getFromDocumentDir(String folderName, String fileName) {
-    return null;
+    return readContentFromFile(new File(folderName, fileName));
   }
 
   @Override
   public String readContentFromFile(File fileForRead) {
-    return null;
+    return new String(readContentBytesFromFile(fileForRead));
   }
 
   @Override
   public byte[] readContentBytesFromFile(File fileForRead) {
-    return null;
+    byte[] buffer = null;
+    try {
+      FileInputStream fis = new FileInputStream(fileForRead);
+      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+      byte[] b = new byte[1024 * 5];
+      int n;
+      while ((n = fis.read(b)) != -1) {
+        bos.write(b, 0, n);
+      }
+      fis.close();
+      bos.close();
+      buffer = bos.toByteArray();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return buffer;
   }
 
   @Override
   public void deleteFile(File file) {
+    try {
+      file.deleteOnExit();
+    } catch (SecurityException e) {
 
+    }
   }
 
   @Override
