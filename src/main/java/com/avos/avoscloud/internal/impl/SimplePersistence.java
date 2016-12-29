@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.AVUtils;
 import com.avos.avoscloud.internal.InternalPersistence;
 
 public class SimplePersistence implements InternalPersistence {
@@ -52,11 +53,13 @@ public class SimplePersistence implements InternalPersistence {
     try {
       fos = new FileOutputStream(fileForSave);
       fos.write(content);
-      fos.close();
+
       return true;
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new RuntimeException(e);
       return false;
+    } finally {
+      AVUtils.closeQuietly(fos);
     }
   }
 
@@ -78,21 +81,24 @@ public class SimplePersistence implements InternalPersistence {
   @Override
   public byte[] readContentBytesFromFile(File fileForRead) {
     byte[] buffer = null;
+    FileInputStream fis;
+    ByteArrayOutputStream bos;
     try {
-      FileInputStream fis = new FileInputStream(fileForRead);
-      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+      fis = new FileInputStream(fileForRead);
+      bos = new ByteArrayOutputStream();
       byte[] b = new byte[1024 * 5];
       int n;
       while ((n = fis.read(b)) != -1) {
         bos.write(b, 0, n);
       }
-      fis.close();
-      bos.close();
       buffer = bos.toByteArray();
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      throw new RuntimeException(e);
     } catch (IOException e) {
-      e.printStackTrace();
+      throw new RuntimeException(e);
+    } finally {
+      AVUtils.closeQuietly(fis);
+      AVUtils.closeQuietly(bos);
     }
     return buffer;
   }
@@ -102,7 +108,7 @@ public class SimplePersistence implements InternalPersistence {
     try {
       file.deleteOnExit();
     } catch (SecurityException e) {
-
+      throw new RuntimeException(e);
     }
   }
 
