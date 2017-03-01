@@ -16,14 +16,19 @@ public class CloudTest extends TestCase {
 //    AVCloud.setProductionMode(false);
   }
 
-  public void testRPC() throws Exception {    
+  public void testRPCHollo() throws Exception {
     AVCloud.rpcFunction("hello", null);
     Map<String, Object> map = AVCloud.rpcFunction("complexObject", null);
     assertEquals("ComplexObject", ((AVObject) map.get("avObject")).getClassName());
     assertNotSame(0, map.size());
+  }
 
+  public void testRPCBareAVObject() throws Exception {
     AVObject result = AVCloud.rpcFunction("bareAVObject", null);
     assertEquals("ComplexObject", result.getClassName());
+  }
+
+  public void testRPCComplexObject() throws Exception {
     AVObject complexObject = new AVObject("ComplexObject");
     complexObject.put("name", "avObject");
     String content = "hahahahh12j9fhjdsahahahahh12j9fhjdsa\njsoidfjiosadfjo\n";
@@ -32,6 +37,6 @@ public class CloudTest extends TestCase {
     complexObject.save();
     HashMap object = AVCloud.rpcFunction("testBareAVObjectParams", complexObject);
     HashMap returnValue =
-        AVCloud.rpcFunction("testAVObjectsArrayParams", Arrays.asList(complexObject));    
+            AVCloud.rpcFunction("testAVObjectsArrayParams", Arrays.asList(complexObject));
   }
 }
