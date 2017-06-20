@@ -1,8 +1,14 @@
 package com.avos.avoscloud.internal.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.AVUtils;
 import com.avos.avoscloud.internal.InternalPersistence;
 
 public class SimplePersistence implements InternalPersistence {
@@ -38,35 +44,72 @@ public class SimplePersistence implements InternalPersistence {
 
   @Override
   public boolean saveContentToFile(String content, File fileForSave) {
-    return false;
+    return saveContentToFile(content.getBytes(), fileForSave);
   }
 
   @Override
   public boolean saveContentToFile(byte[] content, File fileForSave) {
-    return false;
+    FileOutputStream fos;
+    try {
+      fos = new FileOutputStream(fileForSave);
+      fos.write(content);
+
+      return true;
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+      return false;
+    } finally {
+      AVUtils.closeQuietly(fos);
+    }
   }
 
   @Override
-  public void saveToDocumentDir(String content, String folderName, String fileName) {}
+  public void saveToDocumentDir(String content, String folderName, String fileName) {
+    saveContentToFile(content.getBytes(), new File(folderName, fileName));
+  }
 
   @Override
   public String getFromDocumentDir(String folderName, String fileName) {
-    return null;
+    return readContentFromFile(new File(folderName, fileName));
   }
 
   @Override
   public String readContentFromFile(File fileForRead) {
-    return null;
+    return new String(readContentBytesFromFile(fileForRead));
   }
 
   @Override
   public byte[] readContentBytesFromFile(File fileForRead) {
-    return null;
+    byte[] buffer = null;
+    FileInputStream fis;
+    ByteArrayOutputStream bos;
+    try {
+      fis = new FileInputStream(fileForRead);
+      bos = new ByteArrayOutputStream();
+      byte[] b = new byte[1024 * 5];
+      int n;
+      while ((n = fis.read(b)) != -1) {
+        bos.write(b, 0, n);
+      }
+      buffer = bos.toByteArray();
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException(e);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    } finally {
+      AVUtils.closeQuietly(fis);
+      AVUtils.closeQuietly(bos);
+    }
+    return buffer;
   }
 
   @Override
   public void deleteFile(File file) {
-
+    try {
+      file.deleteOnExit();
+    } catch (SecurityException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
