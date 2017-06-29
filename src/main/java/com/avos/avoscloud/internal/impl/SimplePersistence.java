@@ -26,63 +26,52 @@ public class SimplePersistence implements InternalPersistence {
 
   private static SimplePersistence instance;
 
-  @Override
   public File getPaasDocumentDir() {
 
     return null;
   }
 
-  @Override
   public File getCacheDir() {
     return null;
   }
 
-  @Override
   public File getCommandCacheDir() {
     return null;
   }
 
-  @Override
   public boolean saveContentToFile(String content, File fileForSave) {
     return saveContentToFile(content.getBytes(), fileForSave);
   }
 
-  @Override
   public boolean saveContentToFile(byte[] content, File fileForSave) {
-    FileOutputStream fos;
+    FileOutputStream fos = null;
     try {
       fos = new FileOutputStream(fileForSave);
       fos.write(content);
-
       return true;
     } catch (IOException e) {
       throw new RuntimeException(e);
-      return false;
     } finally {
       AVUtils.closeQuietly(fos);
     }
   }
 
-  @Override
   public void saveToDocumentDir(String content, String folderName, String fileName) {
     saveContentToFile(content.getBytes(), new File(folderName, fileName));
   }
 
-  @Override
   public String getFromDocumentDir(String folderName, String fileName) {
     return readContentFromFile(new File(folderName, fileName));
   }
 
-  @Override
   public String readContentFromFile(File fileForRead) {
     return new String(readContentBytesFromFile(fileForRead));
   }
 
-  @Override
   public byte[] readContentBytesFromFile(File fileForRead) {
     byte[] buffer = null;
-    FileInputStream fis;
-    ByteArrayOutputStream bos;
+    FileInputStream fis = null;
+    ByteArrayOutputStream bos = null;
     try {
       fis = new FileInputStream(fileForRead);
       bos = new ByteArrayOutputStream();
@@ -103,7 +92,6 @@ public class SimplePersistence implements InternalPersistence {
     return buffer;
   }
 
-  @Override
   public void deleteFile(File file) {
     try {
       file.deleteOnExit();
@@ -112,85 +100,70 @@ public class SimplePersistence implements InternalPersistence {
     }
   }
 
-  @Override
   public void savePersistentSettingBoolean(String keyzone, String key, Boolean value) {
 
   }
 
-  @Override
   public boolean getPersistentSettingBoolean(String keyzone, String key) {
     // TODO Auto-generated method stub
     return false;
   }
 
-  @Override
   public boolean getPersistentSettingBoolean(String keyzone, String key, Boolean defaultValue) {
     // TODO Auto-generated method stub
     return defaultValue;
   }
 
-  @Override
   public void savePersistentSettingInteger(String keyzone, String key, Integer value) {
     // TODO Auto-generated method stub
 
   }
 
-  @Override
   public Integer getPersistentSettingInteger(String keyzone, String key, Integer defaultValue) {
     // TODO Auto-generated method stub
     return defaultValue;
   }
 
-  @Override
   public Long getPersistentSettingLong(String keyzone, String key, Long defaultValue) {
     // TODO Auto-generated method stub
     return defaultValue;
   }
 
-  @Override
   public void savePersistentSettingLong(String keyzone, String key, Long value) {
     // TODO Auto-generated method stub
 
   }
 
-  @Override
   public void savePersistentSettingString(String keyzone, String key, String value) {
 
   }
 
-  @Override
   public String getPersistentSettingString(String keyzone, String key, String defaultValue) {
     return defaultValue;
   }
 
-  @Override
   public void removePersistentSettingString(String keyzone, String key) {
 
   }
 
-  @Override
   public String removePersistentSettingString(String keyzone, String key, String defaultValue) {
     return null;
   }
 
-  @Override
   public void removeKeyZonePersistentSettings(String keyzone) {
 
   }
 
-  @Override
   public String getAVFileCachePath() {
     // TODO Auto-generated method stub
     return null;
   }
 
-  @Override
   public File getAVFileCacheFile(String url) {
     // TODO Auto-generated method stub
     return null;
   }
 
-  @Override
   public void cleanAVFileCache(int days) {
     // TODO Auto-generated method stub
 
@@ -198,12 +171,10 @@ public class SimplePersistence implements InternalPersistence {
 
   private AVUser currentUser;
 
-  @Override
   public void setCurrentUser(AVUser user, boolean clean) {
     this.currentUser = user;
   }
 
-  @Override
   public <T extends AVUser> T getCurrentUser(Class<T> userClass) {
     if (currentUser != null) {
       return (T) AVUser.cast(currentUser, userClass);
