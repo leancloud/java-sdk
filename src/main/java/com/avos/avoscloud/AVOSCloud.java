@@ -5,10 +5,7 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import com.avos.avoscloud.callback.AVServerDateCallback;
-import com.avos.avoscloud.internal.InternalConfigurationController;
-import com.avos.avoscloud.internal.InternalDate;
-import com.avos.avoscloud.internal.InternalSMS;
-import com.avos.avoscloud.internal.MasterKeyConfiguration;
+import com.avos.avoscloud.internal.*;
 import com.avos.avoscloud.internal.impl.JavaAppConfiguration;
 import com.avos.avoscloud.internal.impl.JavaRequestSignImplementation;
 import com.avos.avoscloud.internal.impl.Log4j2Implementation;
@@ -67,21 +64,18 @@ public class AVOSCloud {
    */
 
   public static void initialize(String applicationId, String clientKey, String masterKey) {
+    JavaAppConfiguration configuration = JavaAppConfiguration.instance();
+    configuration.setApplicationId(applicationId);
+    configuration.setClientKey(clientKey);
+    configuration.setMasterKey(masterKey);
+
     InternalConfigurationController.Builder builder = new InternalConfigurationController.Builder();
+    builder.setAppConfiguration(configuration)
+            .setInternalRequestSign(JavaRequestSignImplementation.instance())
+            .setInternalPersistence(SimplePersistence.instance())
+            .setInternalLogger(Log4j2Implementation.instance());
 
-    builder.setAppConfiguration(JavaAppConfiguration.instance())
-        .setInternalRequestSign(JavaRequestSignImplementation.instance())
-        .setInternalPersistence(SimplePersistence.instance())
-        .setInternalLogger(Log4j2Implementation.instance());
     builder.build();
-
-    InternalConfigurationController.globalInstance().getAppConfiguration()
-        .setApplicationId(applicationId);
-    InternalConfigurationController.globalInstance().getAppConfiguration().setClientKey(clientKey);
-    if (InternalConfigurationController.globalInstance().getAppConfiguration() instanceof MasterKeyConfiguration) {
-      ((MasterKeyConfiguration) InternalConfigurationController.globalInstance()
-          .getAppConfiguration()).setMasterKey(masterKey);
-    }
   }
 
   public static void useAVCloudUS() {
