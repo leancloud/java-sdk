@@ -12,6 +12,7 @@ import com.avos.avoscloud.internal.impl.SimplePersistence;
 public class TestApp {
 
   public static void init() {
+    System.setProperty("LEANCLOUD_APP_HOOK_KEY", "rTXH9hotZfAJjtFOQqwfEHpC");
     InternalConfigurationController.Builder builder = new InternalConfigurationController.Builder();
     builder.setDownloaderImplementation(TestDownloader.class);
     builder.setAppConfiguration(JavaAppConfiguration.instance())
@@ -28,6 +29,7 @@ public class TestApp {
   }
 
   public static void initForQCloud() {
+    System.setProperty("LEANCLOUD_APP_HOOK_KEY", "rTXH9hotZfAJjtFOQqwfEHpC");
     AVOSCloud.setDebugLogEnabled(true);
     AVObject.registerSubclass(Armor.class);
     AVOSCloud.initialize("DV8dqMSRqujdz6hI7NFtCfEq-9Nh9j0Va", "IPvWcVpYBvkHuk6QYc9Jvg3F",
@@ -35,6 +37,7 @@ public class TestApp {
   }
 
   public static void initForUS() {
+    System.setProperty("LEANCLOUD_APP_HOOK_KEY", "dCMnBqEygcursl7dtC2WmseV");
     AVOSCloud.setDebugLogEnabled(true);
     AVOSCloud.useAVCloudUS();
     AVOSCloud.initialize("cswk4i7a7fgprutnxr9cldg6f7d9yr4jpsak2dxlm94vgaoy",

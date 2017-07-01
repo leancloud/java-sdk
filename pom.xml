@@ -4,7 +4,7 @@
 
   <groupId>cn.leancloud</groupId>
   <artifactId>java-sdk</artifactId>
-  <version>0.1.7</version>
+  <version>0.1.8-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>java-sdk</name>
@@ -28,9 +28,9 @@
   </developers>
 
   <scm>
-      <connection>scm:git:git://github.com/leancloud/java-sdk.git</connection>
-      <developerConnection>scm:git:ssh://github.com:leancloud/java-sdk.git</developerConnection>
-      <url>http://github.com/leancloud/java-sdk/tree/master</url>
+    <connection>scm:git:git://github.com/leancloud/java-sdk.git</connection>
+    <developerConnection>scm:git:ssh://github.com:leancloud/java-sdk.git</developerConnection>
+    <url>http://github.com/leancloud/java-sdk/tree/master</url>
   </scm>
   <distributionManagement>
     <snapshotRepository>
@@ -45,6 +45,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jdk.version>1.6</jdk.version>
   </properties>
 
   <dependencies>
@@ -132,7 +133,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin> 
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
@@ -156,6 +157,15 @@
           <serverId>ossrh</serverId>
           <nexusUrl>https://oss.sonatype.org/</nexusUrl>
           <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.6.1</version>
+        <configuration>
+          <source>${jdk.version}</source>
+          <target>${jdk.version}</target>
         </configuration>
       </plugin>
     </plugins>

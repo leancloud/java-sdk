@@ -9,3 +9,4 @@ leancloud-utils/target
 leancloud-utils/.project
 leancloud-utils/.settings
 leancloud-utils/.classpath
+/target/
