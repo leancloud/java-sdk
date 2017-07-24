@@ -28,9 +28,10 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/leancloud/java-sdk.git</connection>
-    <developerConnection>scm:git:ssh://github.com:leancloud/java-sdk.git</developerConnection>
+    <connection>scm:git:https://github.com/leancloud/java-sdk.git</connection>
+    <developerConnection>scm:git:git@github.com:leancloud/java-sdk.git</developerConnection>
     <url>http://github.com/leancloud/java-sdk/tree/master</url>
+    <tag>HEAD</tag>
   </scm>
   <distributionManagement>
     <snapshotRepository>
@@ -158,6 +159,11 @@
           <nexusUrl>https://oss.sonatype.org/</nexusUrl>
           <autoReleaseAfterClose>true</autoReleaseAfterClose>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.3</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
