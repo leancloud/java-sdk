@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import com.avos.avoscloud.AVUtils;
-import com.avos.avoscloud.AppRouterManager;
 import com.avos.avoscloud.internal.AppConfiguration;
 import com.avos.avoscloud.internal.MasterKeyConfiguration;
 
@@ -57,10 +56,6 @@ public class JavaAppConfiguration extends AppConfiguration implements MasterKeyC
   @Override
   public void setMasterKey(String masterKey) {
     this.masterKey = masterKey;
-  }
-
-  protected void setEnv() {
-    AppRouterManager.getInstance().fetchRouter(false);
   }
 
   protected String getEnvOrProperty(String key) {

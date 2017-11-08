@@ -5,7 +5,10 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import com.avos.avoscloud.callback.AVServerDateCallback;
-import com.avos.avoscloud.internal.*;
+import com.avos.avoscloud.internal.InternalConfigurationController;
+import com.avos.avoscloud.internal.InternalDate;
+import com.avos.avoscloud.internal.InternalSMS;
+import com.avos.avoscloud.internal.impl.DefaultAppRouter;
 import com.avos.avoscloud.internal.impl.JavaAppConfiguration;
 import com.avos.avoscloud.internal.impl.JavaRequestSignImplementation;
 import com.avos.avoscloud.internal.impl.Log4j2Implementation;
@@ -24,6 +27,7 @@ public class AVOSCloud {
   static final String AV_CLOUD_API_VERSION_KEY_ZONE = "AV_CLOUD_API_VERSION_KEY_ZONE";
   static final String AV_CLOUD_API_VERSION_KEY = "AV_CLOUD_API_VERSION";
 
+  private static boolean isCN = true;
 
   /**
    * Set network timeout in milliseconds.default is 10 seconds.
@@ -65,6 +69,7 @@ public class AVOSCloud {
 
   public static void initialize(String applicationId, String clientKey, String masterKey) {
     JavaAppConfiguration configuration = JavaAppConfiguration.instance();
+    configuration.setIsCN(isCN);
     configuration.setApplicationId(applicationId);
     configuration.setClientKey(clientKey);
     configuration.setMasterKey(masterKey);
@@ -73,17 +78,19 @@ public class AVOSCloud {
     builder.setAppConfiguration(configuration)
             .setInternalRequestSign(JavaRequestSignImplementation.instance())
             .setInternalPersistence(SimplePersistence.instance())
-            .setInternalLogger(Log4j2Implementation.instance());
+        .setInternalLogger(Log4j2Implementation.instance())
+        .setAppRouter(DefaultAppRouter.instance());
 
     builder.build();
+    InternalConfigurationController.globalInstance().getAppRouter().updateServerHosts();
   }
 
   public static void useAVCloudUS() {
-    PaasClient.useAVCloudUS();
+    isCN = false;
   }
 
   public static void useAVCloudCN() {
-    PaasClient.useAVCloudCN();
+    isCN = true;
   }
 
   public static boolean showInternalDebugLog() {
