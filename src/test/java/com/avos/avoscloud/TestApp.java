@@ -24,6 +24,7 @@ public class TestApp {
     AVOSCloud.setDebugLogEnabled(true);
     AVObject.registerSubclass(Armor.class);
     AVObject.registerSubclass(Player.class);
+    AVOSCloud.useAVCloudCN();
     AVOSCloud.initialize("uu2P5gNTxGhjyaJGAPPnjCtJ-gzGzoHsz", "j5lErUd6q7LhPD8CXhfmA2Rg",
         "atXAmIVlQoBDBLqumMgzXhcY");
   }
@@ -32,6 +33,7 @@ public class TestApp {
     System.setProperty("LEANCLOUD_APP_HOOK_KEY", "rTXH9hotZfAJjtFOQqwfEHpC");
     AVOSCloud.setDebugLogEnabled(true);
     AVObject.registerSubclass(Armor.class);
+    AVOSCloud.useAVCloudCN();
     AVOSCloud.initialize("DV8dqMSRqujdz6hI7NFtCfEq-9Nh9j0Va", "IPvWcVpYBvkHuk6QYc9Jvg3F",
         "atXAmIVlQoBDBLqumMgzXhcY");
   }
