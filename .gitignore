@@ -10,3 +10,8 @@ leancloud-utils/.project
 leancloud-utils/.settings
 leancloud-utils/.classpath
 /target/
+*.iml
+.idea
+.idea/*
+
+
