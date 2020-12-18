@@ -41,6 +41,8 @@ public class AVPush {
   private volatile AVObject notification;
   private Date pushDate = null;
   private boolean production = true;
+  private String reqId;
+  private String notificationId;
 
   static {
     AVPowerfulUtils.createSettings(AVPush.class.getSimpleName(), "push", "");
@@ -95,6 +97,14 @@ public class AVPush {
 
   public Map<String, Object> getPushData() {
     return pushData;
+  }
+
+  public String getReqId() {
+    return reqId;
+  }
+
+  public String getNotificationId() {
+    return notificationId;
   }
 
   /**
@@ -223,6 +233,14 @@ public class AVPush {
     }
     if (this.pushDate != null) {
       map.put("push_time", AVUtils.stringFromDate(pushDate));
+    }
+
+    if(this.reqId != null) {
+      map.put("req_id", reqId);
+    }
+
+    if(this.notificationId != null) {
+      map.put("notification_id", notificationId);
     }
 
     if (!production) {
@@ -492,5 +510,30 @@ public class AVPush {
    */
   public void setProductionMode(boolean production) {
     this.production = production;
+  }
+
+  /**
+   * Different push requests with the same req id in 5 minutes are considered duplicate requests and will
+   * only be sent once. User can use the unique req id in the request to retry the request when getting an
+   * exception such as timeout, to avoid missing messages. We will automatically filter the repeated push
+   * requests to ensure that each target end user will only receive push messages at most once.
+   *
+   * @param Custom request id, up to 16 characters and can only consist of English letters and numbers.
+   */
+  public void setReqId(String reqId) {
+    this.reqId = reqId;
+  }
+
+  /**
+   * When this parameter is NOT provided, we will randomly assign a unique notification id for each push request to
+   * distinguish different pushes. We will use the notification id to count the number of push target devices and
+   * final message arrivals, and show them in the push record. The user-defined notification id can combine multiple
+   * different requests into the same notification id so as to overall count the target device number and the final
+   * message arrival number of the batch of push requests.
+   *
+   * @param Custom notification id, up to 16 characters and can only consist of English letters and numbers.
+   */
+  public void setNotificationId(String notificationId) {
+    this.notificationId = notificationId;
   }
 }
